@@ -9,6 +9,8 @@ services:
     configs:
       - source: frappe-mariadb-config
         target: /opt/bitnami/mariadb/conf/bitnami/my_custom.cnf
+    ports:
+      - "3306:3306"
     networks:
       - frappe-network
     secrets:
