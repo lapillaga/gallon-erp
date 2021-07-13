@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  elgallonegroec-worker-create:
+    image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: worker
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?Variable MYSQL_ROOT_PASSWORD not set}
+      - SITE_NAME=${SITE_NAME?Variable SITE_NAME not set}
+      - INSTALL_APPS=erpnext
+    volumes:
+      - frappe-bench-v13_sites-vol:/home/frappe/frappe-bench/sites:rw
+    networks:
+      - frappe-network
+
+volumes:
+  frappe-bench-v13_sites-vol:
+
+networks:
+  frappe-network:
+    external: true

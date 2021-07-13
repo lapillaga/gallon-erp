@@ -100,6 +100,21 @@ services:
     networks:
       - frappe-network
 
+  erpnext-worker-create:
+    image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: worker
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?Variable MYSQL_ROOT_PASSWORD not set}
+      - SITE_NAME=${SITE_NAME?Variable SITE_NAME not set}
+      - INSTALL_APPS=erpnext
+    volumes:
+      - sites-vol:/home/frappe/frappe-bench/sites:rw
+    networks:
+      - frappe-network
+
   erpnext-worker-short:
     image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
     deploy:
@@ -121,23 +136,6 @@ services:
     command: worker
     environment:
       - WORKER_TYPE=long
-    volumes:
-      - sites-vol:/home/frappe/frappe-bench/sites:rw
-    networks:
-      - frappe-network
-
-  site-creator:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
-    deploy:
-      restart_policy:
-        condition: on-failure
-    command: schedule
-    environment:
-      - SITE_NAME=${SITE_NAME}
-      - DB_ROOT_USER=${DB_ROOT_USER}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-      - INSTALL_APPS=${INSTALL_APPS}
     volumes:
       - sites-vol:/home/frappe/frappe-bench/sites:rw
     networks:
