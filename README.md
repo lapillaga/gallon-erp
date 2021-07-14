@@ -14,7 +14,7 @@
 
 ## Inspect if all services have been created `docker stack services frappe-mariadb`
 
-## If you will execute all commands as root user you must change docker volumes permission to `chmod -R 1000:1000 /var/lib/docker/volumes`
+## If you will execute all commands as root user you must change docker volumes permission to `chown -R 1000:1000 /var/lib/docker/volumes`
 
 ## Create .env in stack folder and then export with this content
 ```
