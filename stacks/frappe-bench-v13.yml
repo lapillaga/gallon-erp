@@ -60,7 +60,6 @@ services:
         - "traefik.http.routers.erpnext-nginx-https.tls=true"
         - "traefik.http.routers.erpnext-nginx-https.tls.certresolver=le"
         - "traefik.http.services.erpnext-nginx.loadbalancer.server.port=80"
-        - "traefik.http.routers.erpnext-nginx.entrypoints=websecure"
 
   erpnext-python:
     image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
@@ -96,21 +95,6 @@ services:
       restart_policy:
         condition: on-failure
     command: worker
-    volumes:
-      - sites-vol:/home/frappe/frappe-bench/sites:rw
-    networks:
-      - frappe-network
-
-  erpnext-worker-create:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION?Variable ERPNEXT_VERSION not set}
-    deploy:
-      restart_policy:
-        condition: not
-    command: worker
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?Variable MYSQL_ROOT_PASSWORD not set}
-      - SITE_NAME=${SITE_NAME?Variable SITE_NAME not set}
-      - INSTALL_APPS=erpnext
     volumes:
       - sites-vol:/home/frappe/frappe-bench/sites:rw
     networks:
