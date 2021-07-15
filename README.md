@@ -110,6 +110,22 @@ Actually only works enter into docker container and executing
 bench new-site erp.domain.com --install-app erpnext --db-type mariadb --no-mariadb-socket --admin-password ADMIN_INITIAL_PASSWORD
 ```
 
+## Steps to install custom apps
+Go to custom-apps directory and change Dockerfile on custom nginx and worker. If root directory does not has execute permission you must run `chmod -R 777 .`.
+
+### Build custom nginx docker image
+```
+docker build --build-arg=FRAPPE_BRANCH=v13.6.0 -t gallon-erpnext-nginx:v13.6.0 custom-apps/nginx
+```
+
+### Build custom worker docker image
+```
+docker build --build-arg=FRAPPE_BRANCH=v13.6.0 -t gallon-erpnext-worker:v13.6.0 custom-apps/worker
+```
+
+### Run Stack again after delete existing stack.
+
+
 # Site operations
 
 Create and use env file to pass environment variables to containers,
