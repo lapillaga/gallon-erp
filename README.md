@@ -16,9 +16,9 @@
     │   └── frappe-bench-v13.yml                # Docker compose file to execute frappe-erp-next services
     └── ...
 
-## Steps to Install Traefik Service
+## Steps to Install Traefik Stack
 
-### Start traefik.yml service
+### Create .env-trafik file
 
 Go to `cd stacks/` then create a `.env-traefik` file with the following content:
 ```
@@ -48,26 +48,60 @@ Create a tag in this node, created as env variable in last step, so that Traefik
 
 `docker stack deploy -c traefik.yml traefik`
 
+### Check Stack
 
-### Create a file config called `frappe-mariadb-config`
+Check if the stack was deployed with `docker stack ps traefik`
 
-## Run `docker config create frappe-mariadb-config ./frappe-mariadb-config`
+### Traefik logs
 
-## Creat a secret with `docker secret create frappe-mariadb-root-password ./frappe-mariadb-root-password`
-
-## Then go to stacks directory and run `docker stack deploy --compose-file frappe-mariadb.yml frappe-mariadb`
-
-## Inspect if all services have been created `docker stack services frappe-mariadb`
-
-## If you will execute all commands as root user you must change docker volumes permission to `chown -R 1000:1000 /var/lib/docker/volumes`
-
-## Create .env in stack folder and then export with this content
+You can check the Traefik logs with:
 ```
-ERPNEXT_VERSION=v13.6.0
-FRAPPE_VERSION=v13.6.0
-MARIADB_HOST=frappe-mariadb_mariadb-master
-SITES=erp.elgallonegroec.com```
-
+docker service logs traefik_traefik
 ```
 
-## Go to stacks folder and then run `docker stack deploy --compose-file frappe-bench-v13.yml frappe-bench-v13`
+## Steps to Install MariaDb Stack
+
+### Create a docker config
+
+Go to `cd configs/`
+
+Run `docker config create frappe-mariadb-config ./frappe-mariadb-config.config`
+
+### Create a docker secret with db credentials
+
+Create a folder secrets with `mkdir secrets` then create a file called `frappe-mariadb-root-password.config` with this content:
+```
+yourdatabasesupersecretpassword
+```
+Run `docker secret create frappe-mariadb-root-password ./frappe-mariadb-root-password.config`
+
+### Run Maria DB Stack
+
+Go to stacks directory and run `docker stack deploy --compose-file frappe-mariadb.yml frappe-mariadb`
+
+### Inspect if all services have been created 
+
+`docker stack services frappe-mariadb`
+
+## Steps to Install ERPNext
+
+If you will execute all commands as root user you must change docker volumes permission to `chown -R 1000:1000 /var/lib/docker/volumes`
+
+### Create .env-frappe in stack folder
+```
+export ERPNEXT_VERSION=v13.6.0
+export FRAPPE_VERSION=v13.6.0
+export MARIADB_HOST=frappe-mariadb_mariadb-master
+export SITES=\`erp.domain.com\`
+```
+
+### Export env variables
+
+Run `source .env-frappe`
+
+### Run Frappe Stack
+
+Go to stacks folder and then run `docker stack deploy --compose-file frappe-bench-v13.yml frappe-bench-v13`
+
+## Steps to create Site
+
