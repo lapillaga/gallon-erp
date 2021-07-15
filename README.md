@@ -105,3 +105,7 @@ Go to stacks folder and then run `docker stack deploy --compose-file frappe-benc
 
 ## Steps to create Site
 
+Actually only works enter into docker container and executing 
+```
+bench new-site erp.domain.com --install-app erpnext --db-type mariadb --no-mariadb-socket --admin-password ADMIN_INITIAL_PASSWORD
+```
