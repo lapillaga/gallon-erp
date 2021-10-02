@@ -13,7 +13,7 @@ RUN /install_frappe ${FRAPPE_BRANCH} && \
   /install_erpnext && \
   # Install required apps with following command
   # /install_app <app_name> <repo> <app_branch>
-  /install_app gallon https://github.com/lpillaga/gallon main && \
+  /install_app gallon https://github.com/lapillaga/gallon main && \
   # Cleanup for production
   /prepare_production
 
