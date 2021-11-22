@@ -8,7 +8,7 @@ COPY install_app.sh /install_app
 COPY prepare_production.sh /prepare_production
 
 # Install frappe
-RUN /install_frappe ${FRAPPE_BRANCH} && \
+RUN chmod +x /install_frappe ${FRAPPE_BRANCH} && \
   # Install erpnext
   /install_erpnext && \
   # Install required apps with following command
