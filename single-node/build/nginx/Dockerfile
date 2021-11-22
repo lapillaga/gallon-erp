@@ -1,6 +1,6 @@
 FROM bitnami/node:12-prod
 
-COPY build/nginx/install_app.sh /install_app
+COPY ./build/nginx/install_app.sh /install_app
 
 RUN /install_app gallon https://github.com/lapillaga/gallon main v13.15.0
 
