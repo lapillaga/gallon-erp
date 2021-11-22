@@ -1,14 +1,36 @@
-FROM bitnami/node:12-prod
+ARG NODE_IMAGE_TAG=14-bullseye-slim
+ARG DOCKER_REGISTRY_PREFIX=frappe
+ARG IMAGE_TAG=develop
 
-COPY ./install_app.sh /install_app
+FROM node:${NODE_IMAGE_TAG} as builder
 
-RUN /install_app gallon https://github.com/lapillaga/gallon main v13.15.0
+ARG GIT_REPO=https://github.com/frappe/erpnext
+ARG GIT_BRANCH=v13.15.0
 
-FROM frappe/erpnext-nginx:edge
+ARG FRAPPE_BRANCH=${GIT_BRANCH}
 
-COPY --from=0 /home/frappe/frappe-bench/sites/ /var/www/html/
-COPY --from=0 /rsync /rsync
-RUN echo -n "\n[custom]" >> /var/www/html/apps.txt
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    python2 \
+    git \
+    build-essential \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY build/erpnext-nginx/install_app.sh /install_app
+RUN chmod +x /install_app \
+    && /install_app erpnext ${GIT_REPO} ${GIT_BRANCH} ${FRAPPE_BRANCH}
+
+RUN chmod +x /install_app \
+    && /install_app gallon https://github.com/lapillaga/gallon main ${FRAPPE_BRANCH}
+
+FROM ${DOCKER_REGISTRY_PREFIX}/frappe-nginx:${IMAGE_TAG}
+
+COPY --from=builder --chown=1000:1000 /home/frappe/frappe-bench/sites/ /var/www/html/
+COPY --from=builder /rsync /rsync
+
+RUN echo "erpnext" >> /var/www/html/apps.txt
+RUN echo -n "gallon" >> /var/www/html/apps.txt
 
 VOLUME [ "/assets" ]
 
