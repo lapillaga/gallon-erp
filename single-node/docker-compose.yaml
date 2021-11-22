@@ -33,7 +33,7 @@ services:
   erpnext-nginx:
     image: gallon-assets
     build:
-      context: ../build/nginx
+      context: ./build/nginx
     restart: on-failure
     environment:
       - FRAPPE_PY=erpnext-python
@@ -54,7 +54,7 @@ services:
   gallon-python:
     image: gallon-worker
     build:
-      context: ../build/worker
+      context: ./build/worker
     restart: on-failure
     environment:
       - MARIADB_HOST=${MARIADB_HOST}
