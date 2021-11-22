@@ -144,7 +144,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./installation/frappe-mariadb.cnf:/etc/mysql/conf.d/frappe.cnf
+      - ./frappe-mariadb.cnf:/etc/mysql/conf.d/frappe.cnf
       - mariadb-vol:/var/lib/mysql
 
   site-creator:
