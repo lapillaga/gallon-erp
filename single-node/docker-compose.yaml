@@ -31,7 +31,9 @@ services:
     userns_mode: "host"
 
   erpnext-nginx:
-    image: frappe/erpnext-nginx:${ERPNEXT_VERSION}
+    image: gallon-assets
+    build:
+      context: ../build/nginx
     restart: on-failure
     environment:
       - FRAPPE_PY=erpnext-python
@@ -49,8 +51,10 @@ services:
       - sites-vol:/var/www/html/sites:rw
       - assets-vol:/assets:rw
 
-  erpnext-python:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+  gallon-python:
+    image: gallon-worker
+    build:
+      context: ../build/worker
     restart: on-failure
     environment:
       - MARIADB_HOST=${MARIADB_HOST}
@@ -74,7 +78,7 @@ services:
       - logs-vol:/home/frappe/frappe-bench/logs:rw
 
   erpnext-worker-default:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+    image: gallon-worker
     restart: on-failure
     command: worker
     depends_on:
@@ -85,7 +89,7 @@ services:
       - logs-vol:/home/frappe/frappe-bench/logs:rw
 
   erpnext-worker-short:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+    image: gallon-worker
     restart: on-failure
     command: worker
     environment:
@@ -98,7 +102,7 @@ services:
       - logs-vol:/home/frappe/frappe-bench/logs:rw
 
   erpnext-worker-long:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+    image: gallon-worker
     restart: on-failure
     command: worker
     environment:
@@ -110,7 +114,7 @@ services:
       - sites-vol:/home/frappe/frappe-bench/sites:rw
 
   erpnext-schedule:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+    image: gallon-worker
     restart: on-failure
     command: schedule
     depends_on:
@@ -148,11 +152,11 @@ services:
       - mariadb-vol:/var/lib/mysql
 
   site-creator:
-    image: frappe/erpnext-worker:${ERPNEXT_VERSION}
+    image: gallon-worker
     restart: "no"
     command: new
     depends_on:
-      - erpnext-python
+      - gallon-python
     environment:
       - SITE_NAME=${SITE_NAME}
       - DB_ROOT_USER=${DB_ROOT_USER}
