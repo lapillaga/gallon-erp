@@ -1,6 +1,6 @@
 ARG NODE_IMAGE_TAG=14-bullseye-slim
 ARG DOCKER_REGISTRY_PREFIX=frappe
-ARG IMAGE_TAG=develop
+ARG IMAGE_TAG=v13.15.0
 
 FROM node:${NODE_IMAGE_TAG} as builder
 
