@@ -17,7 +17,7 @@ RUN apt-get update \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY build/erpnext-nginx/install_app.sh /install_app
+COPY ./install_app.sh /install_app
 RUN chmod +x /install_app \
     && /install_app erpnext ${GIT_REPO} ${GIT_BRANCH} ${FRAPPE_BRANCH}
 
