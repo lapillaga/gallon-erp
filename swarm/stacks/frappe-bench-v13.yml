@@ -80,7 +80,7 @@ services:
       - frappe-network
 
   frappe-socketio:
-    image: frappe/frappe-socketio:v13.15.0
+    image: frappe/frappe-socketio:${FRAPPE_VERSION?Variable FRAPPE_VERSION not set}
     deploy:
       restart_policy:
         condition: on-failure
