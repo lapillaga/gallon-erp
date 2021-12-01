@@ -85,7 +85,7 @@ Go to stacks directory and run `docker stack deploy --compose-file frappe-mariad
 
 ## Steps to Install ERPNext
 
-If you will execute all commands as root user you must change docker volumes permission to `chown -R 1000:1000 /var/lib/docker/volumes`
+You must check if `/var/lib/docker/volumes` directory has root as owner. It's very important. If not change with this command `chown -R user:user directory/`
 
 ### Create .env-frappe in stack folder
 ```
@@ -98,17 +98,6 @@ export SITES=\`erp.domain.com\`
 ### Export env variables
 
 Run `source .env-frappe`
-
-### Run Frappe Stack
-
-Go to stacks folder and then run `docker stack deploy --compose-file frappe-bench-v13.yml frappe-bench-v13`
-
-## Steps to create Site
-
-Actually only works enter into docker container and executing 
-```
-bench new-site erp.domain.com --install-app erpnext --db-type mariadb --no-mariadb-socket --admin-password ADMIN_INITIAL_PASSWORD
-```
 
 ## Steps to install custom apps
 Go to custom-apps directory and change Dockerfile on custom nginx and worker. If root directory does not has execute permission you must run `chmod -R 777 .`.
@@ -123,7 +112,16 @@ docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-nginx:v13.15.0
 docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-worker:v13.15.0 custom-apps/worker
 ```
 
-### Run Stack again after delete existing stack.
+### Run Frappe Stack
+
+Go to stacks folder and then run `docker stack deploy --compose-file frappe-bench-v13.yml frappe-bench-v13`
+
+## Steps to create Site
+
+Actually only works enter into docker container and executing 
+```
+bench new-site erp.domain.com --install-app erpnext --db-type mariadb --no-mariadb-socket --admin-password ADMIN_INITIAL_PASSWORD
+```
 
 
 # Site operations
