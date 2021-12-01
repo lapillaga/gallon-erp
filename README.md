@@ -115,12 +115,12 @@ Go to custom-apps directory and change Dockerfile on custom nginx and worker. If
 
 ### Build custom nginx docker image
 ```
-docker build --build-arg=FRAPPE_BRANCH=v13.11.0 -t gallon-erpnext-nginx:v13.11.1 custom-apps/nginx
+docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-nginx:v13.15.0 custom-apps/nginx
 ```
 
 ### Build custom worker docker image
 ```
-docker build --build-arg=FRAPPE_BRANCH=v13.11.0 -t gallon-erpnext-worker:v13.11.1 custom-apps/worker
+docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-worker:v13.15.0 custom-apps/worker
 ```
 
 ### Run Stack again after delete existing stack.
