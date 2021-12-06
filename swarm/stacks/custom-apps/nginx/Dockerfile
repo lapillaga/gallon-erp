@@ -14,6 +14,7 @@ RUN /install_frappe ${FRAPPE_BRANCH} && \
   # Install required apps with following command
   # /install_app <app_name> <repo> <app_branch>
   /install_app gallon https://github.com/lapillaga/gallon main && \
+  /install_app jci_website https://github.com/tenpisoft/jci_website.git main && \
   # Cleanup for production
   /prepare_production
 
@@ -24,6 +25,7 @@ COPY --from=0 /rsync /rsync
 
 # Append list of installed to apps.txt
 RUN echo -n "gallon" >> /var/www/html/apps.txt
+RUN echo -n "jci_website" >> /var/www/html/apps.txt
 
 VOLUME [ "/assets" ]
 
