@@ -102,15 +102,16 @@ Run `source .env-frappe`
 ## Steps to install custom apps
 Go to custom-apps directory and change Dockerfile on custom nginx and worker. If root directory does not has execute permission you must run `chmod -R 777 .`.
 
+### Build custom worker docker image
+```
+docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-worker:v13.15.0 custom-apps/worker
+```
+
 ### Build custom nginx docker image
 ```
 docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-nginx:v13.15.0 custom-apps/nginx
 ```
 
-### Build custom worker docker image
-```
-docker build --build-arg=FRAPPE_BRANCH=v13.15.0 -t gallon-erpnext-worker:v13.15.0 custom-apps/worker
-```
 
 ### Run Frappe Stack
 
