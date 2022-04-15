@@ -1,6 +1,6 @@
-ARG FRAPPE_BRANCH=v13.15.0
+ARG FRAPPE_BRANCH=v13.21.0
 FROM node:14-buster
-ARG FRAPPE_BRANCH=v13.15.0
+ARG FRAPPE_BRANCH=v13.21.0
 
 COPY install_frappe.sh /install_frappe
 COPY install_erpnext.sh /install_erpnext
@@ -15,6 +15,7 @@ RUN /install_frappe ${FRAPPE_BRANCH} && \
   # /install_app <app_name> <repo> <app_branch>
   /install_app gallon https://github.com/lapillaga/gallon main && \
   /install_app jci_website https://github.com/tenpisoft/jci_website.git main && \
+  /install_app lapillaga_frappe https://github.com/lapillaga/lapillaga_frappe.git main && \
   # Cleanup for production
   /prepare_production
 
@@ -26,6 +27,7 @@ COPY --from=0 /rsync /rsync
 # Append list of installed to apps.txt
 RUN echo -n "gallon" >> /var/www/html/apps.txt
 RUN echo -n "jci_website" >> /var/www/html/apps.txt
+RUN echo -n "lapillaga_frappe" >> /var/www/html/apps.txt
 
 VOLUME [ "/assets" ]
 
